@@ -2,6 +2,7 @@ require('normalize.css/normalize.css');
 require('styles/App.scss');
 
 import React from 'react';
+import ReactDOM from 'react-dom'
 
 //获取图片相关的数据
 var imageDatas=require('../data/imageDatas.json');
@@ -21,24 +22,20 @@ imageDatas=(function getImageURL(imageDatasArr){
 
 class ImgFigure extends React .Component {
 	render(){
-          
         var styleObj={};
         //如果props属性中指定了这张图片的位置，则使用
         if(this.props.arrange.pos){
         	styleObj=this.props.arrange.pos;
         }
-
-
-
 		return(
-           <figure className="img-figure" style={styleObj}>
- 			<img src={this.props.data.imageURL}
+          <figure className="img-figure" style={styleObj}>
+ 		         	<img src={this.props.data.imageURL}
                   alt={this.props.data.title}
- 			 />
- 			   <figcaption>
+ 			         />
+ 			      <figcaption>
  			       <h2 className="img-title">{this.props.data.title}</h2>
- 			   </figcaption>
- 			</figure>
+			      </figcaption>
+ 			    </figure>
 
 		)
 	}
@@ -49,14 +46,11 @@ class ImgFigure extends React .Component {
 */
 
 function getRangeRandom(low,high){
-
     return Math.ceil(Math.random()*(high-low)+low);
-
 }
 
 
 class GalleryByReactApp extends React.Component {
-
  constructor(props){
   super(props)
     this.state={
@@ -153,14 +147,14 @@ class GalleryByReactApp extends React.Component {
   componentDidMount(){
   	
   	//首先拿到舞台的大小
-      var stageDOM=this.refs.stage,
+      var stageDOM=ReactDOM.findDOMNode(this.refs.stage),
           stageW=stageDOM.scrollWidth,
           stageH=stageDOM.scrollHeight,
           halfStageW=Math.ceil(stageW/2),
           halfStageH=Math.ceil(stageH/2);
      
       //拿到一个imageFigure的大小
-      var imgFigureDOM=this.refs.imgFigure0,
+      var imgFigureDOM=ReactDOM.findDOMNode(this.refs.imgFigure0),
            imgW=imgFigureDOM.scrollWidth,
            imgH=imgFigureDOM.scrollHeight,
            halfImgW=Math.ceil(imgW/2),
@@ -201,7 +195,7 @@ class GalleryByReactApp extends React.Component {
      	   		}
      	   	};
      	   }
-     	  imgFigures.push(<ImgFigure data={value} ref={'imgFigure' +index} arrange={this.state.imgsArrangeArr[index]} /> );
+     	  imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure' +index} arrange={this.state.imgsArrangeArr[index]} /> );
      }.bind(this));
     return (
      	    <section className="stage" ref="stage">
